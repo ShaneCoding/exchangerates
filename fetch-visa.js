@@ -45,7 +45,7 @@ const url = `https://usa.visa.com/cmsapi/fx/rates?amount=1000&fee=3&utcConverted
   try {
     const json = JSON.parse(bodyText);
 
-    visaRate = json.originalValues?.fxRateVisa;
+    visaRate = json.originalValues?.fxRateWithAdditionalFee;
     if (!visaRate) {
       throw new Error("Visa rate not found in response");
     }
