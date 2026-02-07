@@ -1,0 +1,32 @@
+name: Fetch Visa FX Rate
+
+on:
+  schedule:
+    - cron: "0 * * * *" # every hour
+  workflow_dispatch: # allows manual trigger
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install puppeteer
+
+      - name: Fetch Visa rate
+        run: node fetch-visa.js
+
+      - name: Commit JSON
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add visa-rate.json
+          git commit -m "Update Visa FX rate [skip ci]" || echo "No changes"
+          git push
