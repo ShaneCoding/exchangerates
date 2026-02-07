@@ -1,4 +1,9 @@
 {
-  "USDJPY": 0,
-  "lastUpdated": null
+  "provider": "visa",
+  "from": "USD",
+  "to": "JPY",
+  "feePercent": 3,
+  "date": "02/07/2026",
+  "rate": "0.00638977",
+  "fetchedAt": "2026-02-07T15:15:55.498Z"
 }
