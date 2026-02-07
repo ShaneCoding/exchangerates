@@ -23,10 +23,10 @@ jobs:
       - name: Fetch Visa rate
         run: node fetch-visa.js
 
-      - name: Commit JSON
+      - name: Commit and Push
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
           git add visa-rate.json
-          git commit -m "Update Visa FX rate [skip ci]" || echo "No changes"
-          git push
+          git commit -m "Update Visa FX rate [skip ci]" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:main
