@@ -30,6 +30,7 @@ const url = `https://usa.visa.com/cmsapi/fx/rates?amount=1000&fee=3&utcConverted
 
   const page = await browser.newPage();
 
+  // Pretend to be a normal browser
   await page.setUserAgent(
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
       "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
@@ -40,20 +41,20 @@ const url = `https://usa.visa.com/cmsapi/fx/rates?amount=1000&fee=3&utcConverted
 
   const bodyText = await page.evaluate(() => document.body.innerText);
 
-  // 👇 Added exactly what you requested
-  console.log(bodyText.slice(0, 1000));
-
-  let data;
+  let visaRate;
   try {
-    data = JSON.parse(bodyText);
+    const json = JSON.parse(bodyText);
+
+    visaRate = json.originalValues?.fxRateVisa;
+    if (!visaRate) {
+      throw new Error("Visa rate not found in response");
+    }
+
+    console.log("Visa rate:", visaRate);
   } catch (err) {
     console.error("Failed to parse JSON. Raw response:");
     console.error(bodyText.slice(0, 500));
     throw err;
-  }
-
-  if (!data || !data.fxRate) {
-    throw new Error("Visa rate not found in response");
   }
 
   const output = {
@@ -62,7 +63,7 @@ const url = `https://usa.visa.com/cmsapi/fx/rates?amount=1000&fee=3&utcConverted
     to: "JPY",
     feePercent: 3,
     date: today,
-    rate: data.fxRate,
+    rate: visaRate,
     fetchedAt: new Date().toISOString(),
   };
 
