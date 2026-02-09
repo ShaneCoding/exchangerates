@@ -2,7 +2,7 @@ name: Fetch Visa FX Rate
 
 on:
   schedule:
-    - cron: "0,30 * * * *" # runs at minute 0 and 30 of every hour
+    - cron: "0 12 * * *" # runs at minute 0 and 30 of every hour
   workflow_dispatch: # allows manual trigger
 
 jobs:
